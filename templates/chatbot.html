@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/chatbot/styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v5.6.11, mobirise.com">
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:image:src" content="">
+  <meta property="og:image" content="">
+  <meta name="twitter:title" content="Home">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+  <meta name="description" content="This is a cattle disease prediction app">
+  
+  
+  <title>Chatbot</title>
+  <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="/static/assets/parallax/jarallax.css">
+  <link rel="stylesheet" href="/static/assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="/static/assets/socicon/css/styles.css">
+  <link rel="stylesheet" href="/static/assets/theme/css/style.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
+  <link rel="preload" as="style" href="/static/assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="/static/assets/mobirise/css/mbr-additional.css" type="text/css">
+  
+  
+</head>
+
+<body>
+    
+  <section data-bs-version="5.1" class="menu cid-s48OLK6784" once="menu" id="menu1-h">
+    
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div class="container">
+            <div class="navbar-brand">
+                
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-black display-7" href="{{ url_for('home')}}">Cattle Disease Predictor</a></span>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbarSupportedContent" data-bs-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><span class="nav-link link text-black display-4" ><a href="{{ url_for('social_page')}}" style="color: black;">Social Awareness</a>&nbsp; &nbsp; &nbsp; &nbsp; <a href="{{ url_for('skin_diease_form')}}" style="color:black">Image Detector</a></span></li>
+                    <li class="nav-item"><a class="nav-link link text-black display-4" href="{{ url_for('bot')}}">&nbsp;Help</a></li></ul>
+                
+                
+            </div>
+        </div>
+    </nav>
+
+</section>
+    <div class="row" style="padding-top:100px ">
+        <div class="col-md-10 mr-auto ml-auto" style="background: white; padding-top:5px ; color: red;">
+    <h1>Q&A ChatBot</h1>
+    <form>
+        <div id="chatbox" style="background: white;">
+            <div class="col-md-8 ml-auto mr-auto">
+                <p class="botText" style="padding:5px;" ><span style="background-color: rgb(209, 246, 255); padding-top:5px ; color: rgb(8, 49, 112);
+                    box-shadow: rgb(8 49 112 / 24%) 0px 2px 8px 0px;
+                    border-radius: 2rem;
+                    border-color: #0f2121;
+                    ">Hi! I'm Q&A Bot.</span></p>
+            </div> 
+        </div>
+        <div id="userInput" class="row">
+            <div class="col-md-10">
+                <input id="text" type="text" name="msg" placeholder="Message" class="form-control">
+                <button type="submit" id="send" class="btn btn-warning">Send</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("form").on("submit", function(event) {
+            var rawText = $("#text").val();
+            var userHtml = '<p class="userText" style="padding:5px;"><span style="background-color: rgb(209, 246, 255); padding-top:5px ; color: rgb(8, 49, 112);box-shadow: rgb(8 49 112 / 24%) 0px 2px 8px 0px;border-radius: 2rem">' + rawText + "</span></p>";
+            $("#text").val("");
+            $("#chatbox").append(userHtml);
+            document.getElementById("userInput").scrollIntoView({
+                block: "start",
+                behavior: "smooth",
+            });
+            $.ajax({
+                data: {
+                    msg: rawText,
+                },
+                type: "POST",
+                url: "/chatbot_response",
+            }).done(function(data) {
+                var botHtml = '<p class="botText" style="padding:5px;"><span style="background-color: rgb(209, 246, 255); padding:5px ; color: rgb(8, 49, 112);box-shadow: rgb(8 49 112 / 24%) 0px 2px 8px 0px;border-radius: 2rem">' + data + "</span></p>";
+                $("#chatbox").append($.parseHTML(botHtml));
+                document.getElementById("userInput").scrollIntoView({
+                    block: "start",
+                    behavior: "smooth",
+                });
+            });
+            event.preventDefault();
+        });
+    });
+</script>
+</body>
+
+</html>
